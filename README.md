@@ -2,7 +2,7 @@
 # BuildDroid
 An opensource tool to build Android ROMs on Crave. If you have better name for this script, let me know!
 
-# How to start
+## How to start
 Clone this repo:
 `git clone https://github.com/wojtekojtek/builddroid`
 and enter that directory. Create an empty file with name `config.ini`.
