@@ -43,7 +43,7 @@ For now, only GitHub is supported.<br>
 `telegram` - send info to telegram, set to true or false<br>
 `chat_id` - telegram chat id<br>
 `private_chat_id` - to send BashUpload download link (because the file can be downloaded only once). you can use `chat_id`<br>
-`console` - if true, it won't show messages printed by this script<br>
+`console` - if true, will show messages printed by this script<br>
 `quiet` -  if true, hide repo tool, github, and other's output, **it doesn't hide script output and build logs**<br>
 
 ### Secrets
