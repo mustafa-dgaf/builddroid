@@ -7,6 +7,7 @@ Clone this repo:
 `git clone https://github.com/wojtekojtek/builddroid` and enter that directory.<br>
 Create an empty file with name `config.ini`, then put `#!/bin/bash` at start of the file. After that, add some variables.<br>
 Example `config.ini` file: [click here](https://github.com/wojtekojtek/builddroid/blob/main/examples/config.ini)
+When you'll be ready, simply run `chmod +x builddroid.sh && ./builddroid.sh`
 
 ## Variables
 There are 30 variables, only 3 are required to build custom ROM.
