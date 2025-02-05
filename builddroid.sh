@@ -382,8 +382,7 @@ case "$rom" in
         ;;
     "LineageOS")
         print "├─ ${Cyan}Building LineageOS${Reset}"
-        lunch lineage_${codename}-${lunch} $quiet
-        mka bacon -j$(nproc --all) $buildlogging
+        breakfast $codename $buildlogging
         ;;
     "PixelExperience")
         print "├─ ${Cyan}Building PixelExperience${Reset}"
