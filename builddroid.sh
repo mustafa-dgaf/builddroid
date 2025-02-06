@@ -62,10 +62,12 @@ if [ "$lunch" == "" ]; then
     telegram "Error | Lunch is empty"
     exit 1
 fi
-if [ "$ota" == "true" ] && [ "$githubota" == "" ] || [ "$gituser" == "" ] ||[ "$gitemail" == "" ] || [ "$gitbranch" == "" ] || [ "$jsonversion" == "" ] || [ "$jsonromtype" == "" ] || [ "$githubota" == "" ] || [ "$url" == "" ]; then
-    print "╰─ ${Red}Error${Reset} | Required variables for OTA are empty, check config file"
-    telegram "Error | Required variables for OTA are empty, check config file"
-    exit 1
+if [ "$ota" == "true" ]; then
+    if [ "$githubota" == "" ] || [ "$gituser" == "" ] ||[ "$gitemail" == "" ] || [ "$gitbranch" == "" ] || [ "$jsonversion" == "" ] || [ "$jsonromtype" == ""] || [ "$githubota" == "" ] || [ "$url" == "" ]; then
+        print "╰─ ${Red}Error${Reset} | Required variables for OTA are empty, check config file"
+        telegram "Error | Required variables for OTA are empty, check config file"
+        exit 1
+    fi
 fi
 if [ "$ota" == "true" ] && [ "$server" == "" ] && [ "$downloadurl" == "" ]; then
     print "╰─ ${Red}Error${Reset} | No link to download OTA"
