@@ -8,7 +8,7 @@ Black='\033[0;30m'
 Red='\033[1;31m'
 Yellow='\033[0;33m'
 Green='\033[1;32m'
-Orange='\033[1;33m'
+Orange='\e[38;5;214m'
 Blue='\033[0;34m'
 Purple='\033[0;35m'
 Cyan='\033[1;36m'
@@ -62,7 +62,7 @@ if [ "$lunch" == "" ]; then
     telegram "Error | Lunch is empty"
     exit 1
 fi
-if [ "$ota" == "true" ] && [ "$githubota" == "" ] || [ "$gituser" == "" ] ||[ "$gitemail" == "" ] || [ "$gitbranch" == "" ] || [ "$jsonversion" == "" ] || [ "$jsonromtype" == ""] || [ "$githubota" == "" ] || [ "$url" == "" ]; then
+if [ "$ota" == "true" ] && [ "$githubota" == "" ] || [ "$gituser" == "" ] ||[ "$gitemail" == "" ] || [ "$gitbranch" == "" ] || [ "$jsonversion" == "" ] || [ "$jsonromtype" == "" ] || [ "$githubota" == "" ] || [ "$url" == "" ]; then
     print "╰─ ${Red}Error${Reset} | Required variables for OTA are empty, check config file"
     telegram "Error | Required variables for OTA are empty, check config file"
     exit 1
@@ -123,17 +123,17 @@ fi
 if [ "$telegram" == "true" ]; then
     buildlogging="| tee build.log"
 fi
-if ! [ -e "tgsrv.sh" ] || ! [ -e "config.ini" ] || ! [ -e "status.sh" ]; then
-    print "╰─ ${Red}Error${Reset} | Corrupted installation"
-    exit 1
-fi
-if ! [ -e "packages" ] || ! [ -e "vendor" ] || ! [ -e "build" ]; then
-    cd ..
-    if ! [ -e "packages" ] || ! [ -e "vendor" ] || ! [ -e "build" ]; then
-        print "╰─ ${Red}Error${Reset} | Not inside ROM sources"
-        exit 1
-    fi
-fi
+# if ! [ -e "tgsrv.sh" ] || ! [ -e "config.ini" ] || ! [ -e "status.sh" ]; then
+#     print "╰─ ${Red}Error${Reset} | Corrupted installation"
+#     exit 1
+# fi
+# if ! [ -e "packages" ] || ! [ -e "vendor" ] || ! [ -e "build" ]; then
+#     cd ..
+#     if ! [ -e "packages" ] || ! [ -e "vendor" ] || ! [ -e "build" ]; then
+#         print "╰─ ${Red}Error${Reset} | Not inside ROM sources"
+#         exit 1
+#     fi
+# fi
 
 # --------------------
 #   Unsupported ROM
@@ -317,7 +317,9 @@ if [ "$trees" != "" ]; then
         else
             print "│  ╰─ ${Cyan}Cloning trees${Reset}"
         fi
-        $trees $quiet
+        echo "$trees" | while read -r line; do
+            $line $quiet
+        done
         if [ -e "hardware/samsung" ]; then
             mv hardware/tmp hardware/samsung/nfc
             print "│     ╰─ ${Cyan}Restoring NFC${Reset}"
@@ -382,7 +384,8 @@ case "$rom" in
         ;;
     "LineageOS")
         print "├─ ${Cyan}Building LineageOS${Reset}"
-        breakfast $codename $buildlogging
+        lunch lineage_${codename}-${lunch} $quiet
+        mka bacon -j$(nproc --all) $buildlogging
         ;;
     "PixelExperience")
         print "├─ ${Cyan}Building PixelExperience${Reset}"
@@ -701,7 +704,11 @@ fi
 #       Info
 # --------------------
 
-print "╰─ ${Green}Build completed${Reset} | Time taken: ${time_all}"
+if [ "$status_build" == "success" ]; then
+    print "╰─ ${Green}Build completed${Reset} | Time taken: ${time_all}"
+else
+    print "╰─ ${Red}Build failed${Reset} | Time taken: ${time_all}"
+fi
 telegram "<b>Build completed</b> | Time taken: ${time_all}"
 if [ $status_build == "fail" ]; then
     if [ -e "./out/error.log" ]; then
