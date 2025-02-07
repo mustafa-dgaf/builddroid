@@ -194,38 +194,43 @@ if [ "$unsupported" != "" ]; then
         time_rom_sync="$(echo $time_rom_sync | sed 's/^0h //; s/ 0min//; s/^0min //')"
     fi
 fi
-declare -A ROM_PATTERNS=(
-    ["DerpFest"]="vendor/derp"
-    ["PixelExperience"]="pe.mk"
-    ["AOSiP"]="vendor/aosip"
-    ["EvolutionX"]="vendor/evolution"
-    ["crDroid"]="vendor/crdroid"
-    ["HavocOS"]="vendor/havoc"
-    ["ArrowOS"]="vendor/arrow"
-    ["ResurrectionRemix"]="vendor/resurrection"
-    ["BlissROM"]="vendor/bliss"
-    ["ParanoidAndroid"]="vendor/pa"
-    ["SyberiaOS"]="vendor/syberia"
-    ["LegionOS"]="vendor/legion"
-    ["dotOS"]="vendor/dotos"
-    ["PixysOS"]="vendor/pixys"
-    ["Xtended"]="vendor/xtended"
-    ["NitrogenOS"]="vendor/nitrogen"
-    ["OctaviOS"]="vendor/octavi"
-    ["YAAP"]="vendor/yaap"
-    ["StyxProject"]="vendor/styx"
-    ["ElixirOS"]="vendor/elixir"
-    ["ProjectSakura"]="vendor/sakura"
-    ["SuperiorOS"]="vendor/superior"
-    ["Nameless"]="vendor/nameless"
-    ["PixelOS"]="vendor/pixelos"
-    ["LineageOS"]="build/soong/Android.bp"
-    ["AOSP"]="build/make/core/envsetup.mk"
+
+# Define ROMs in priority order (highest first)
+ROM_PRIORITY=(
+    "LineageOS:build/soong/Android.bp"
+    "DerpFest:vendor/derp"
+    "PixelExperience:pe.mk"
+    "AOSiP:vendor/aosip"
+    "EvolutionX:vendor/evolution"
+    "crDroid:vendor/crdroid"
+    "HavocOS:vendor/havoc"
+    "ArrowOS:vendor/arrow"
+    "ResurrectionRemix:vendor/resurrection"
+    "BlissROM:vendor/bliss"
+    "ParanoidAndroid:vendor/pa"
+    "SyberiaOS:vendor/syberia"
+    "LegionOS:vendor/legion"
+    "dotOS:vendor/dotos"
+    "PixysOS:vendor/pixys"
+    "Xtended:vendor/xtended"
+    "NitrogenOS:vendor/nitrogen"
+    "OctaviOS:vendor/octavi"
+    "YAAP:vendor/yaap"
+    "StyxProject:vendor/styx"
+    "ElixirOS:vendor/elixir"
+    "ProjectSakura:vendor/sakura"
+    "SuperiorOS:vendor/superior"
+    "Nameless:vendor/nameless"
+    "PixelOS:vendor/pixelos"
+    "AOSP:build/make/core/envsetup.mk"
 )
-ROM_DETECTED="false"
-for ROM in "${!ROM_PATTERNS[@]}"; do
-    if [[ -e "${ROM_PATTERNS[$ROM]}" ]]; then
-        ROM_DETECTED="true"
+ROM_DETECTED=""
+for ENTRY in "${ROM_PRIORITY[@]}"; do
+    ROM="${ENTRY%%:*}"
+    FILE="${ENTRY#*:}"
+
+    if [[ -e "$FILE" ]]; then
+        ROM_DETECTED="$ROM"
         break
     fi
 done
