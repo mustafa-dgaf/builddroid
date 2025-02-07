@@ -196,7 +196,6 @@ if [ "$unsupported" != "" ]; then
 fi
 declare -A ROM_PATTERNS=(
     ["DerpFest"]="vendor/derp"
-    ["LineageOS"]="build/soong/Android.bp"
     ["PixelExperience"]="pe.mk"
     ["AOSiP"]="vendor/aosip"
     ["EvolutionX"]="vendor/evolution"
@@ -220,6 +219,7 @@ declare -A ROM_PATTERNS=(
     ["SuperiorOS"]="vendor/superior"
     ["Nameless"]="vendor/nameless"
     ["PixelOS"]="vendor/pixelos"
+    ["LineageOS"]="build/soong/Android.bp"
     ["AOSP"]="build/make/core/envsetup.mk"
 )
 ROM_DETECTED="false"
@@ -232,7 +232,7 @@ done
 if [[ "$ROM_DETECTED" == "false" ]]; then
     ROM=""
     if ! [ "$rom" == "" ]; then
-        rom=$ROM
+        ROM=$rom
     fi
 else
     if [ "$status_rom" == "unsupported" ]; then
@@ -244,6 +244,14 @@ Detected: <b>${ROM}</b>"
         fi
     fi
 fi
+if [ "$rom" == "" ]; then
+    rom="$ROM"
+fi
+
+# --------------------
+#  Signing and trees
+# --------------------
+
 if [ "$sign" == "true" ]; then
     if [ -e "$keys" ]; then
         if [ -e "${keys}/bluetooth.x509.pem" ] && [ -e "${keys}/bluetooth.pk8" ] && [ -e "${keys}/media.x509.pem" ] && [ -e "${keys}/media.pk8" ] && [ -e "${keys}/networkstack.x509.pem" ] && [ -e "${keys}/networkstack.pk8" ] && [ -e "${keys}/nfc.x509.pem" ] && [ -e "${keys}/nfc.pk8" ] && [ -e "${keys}/otakey.x509.pem" ] && [ -e "${keys}/otakey.pk8" ] && [ -e "${keys}/platform.x509.pem" ] && [ -e "${keys}/platform.pk8" ] && [ -e "${keys}/releasekey.x509.pem" ] && [ -e "${keys}/releasekey.pk8" ] && [ -e "${keys}/sdk_sandbox.x509.pem" ] && [ -e "${keys}/sdk_sandbox.pk8" ] && [ -e "${keys}/shared.x509.pem" ] && [ -e "${keys}/shared.pk8" ] && [ -e "${keys}/testkey.x509.pem" ] && [ -e "${keys}/testkey.pk8" ] && [ -e "${keys}/verity.x509.pem" ] && [ -e "${keys}/verity.pk8" ]; then
@@ -257,11 +265,6 @@ if [ "$sign" == "true" ]; then
         fi
     fi
 fi
-
-# --------------------
-#  Signing and trees
-# --------------------
-
 if [ "$sign" == "true" ]; then # to be done: support for other ROMs
     if [ -e "./vendor/derp/signing/keys" ]; then
         mv "${keys}/*" "./vendor/derp/signing/keys"
@@ -310,7 +313,6 @@ if [ "$trees" != "" ]; then
                 rm -rf "$dir"
             fi
         done
-        print "│  ╰─ ${Cyan}Cloning trees${Reset}"
         if [ -e "hardware/samsung" ]; then
             print "│     ├─ ${Cyan}Backing up NFC${Reset}"
             mv hardware/samsung/nfc hardware/tmp
