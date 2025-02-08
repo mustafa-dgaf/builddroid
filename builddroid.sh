@@ -197,7 +197,6 @@ fi
 
 # Define ROMs in priority order (highest first)
 ROM_PRIORITY=(
-    "LineageOS:build/soong/Android.bp"
     "DerpFest:vendor/derp"
     "PixelExperience:pe.mk"
     "AOSiP:vendor/aosip"
@@ -222,6 +221,7 @@ ROM_PRIORITY=(
     "SuperiorOS:vendor/superior"
     "Nameless:vendor/nameless"
     "PixelOS:vendor/pixelos"
+    "LineageOS:build/soong/Android.bp"
     "AOSP:build/make/core/envsetup.mk"
 )
 ROM_DETECTED=""
