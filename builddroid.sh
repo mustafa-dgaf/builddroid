@@ -122,9 +122,6 @@ fi
 if [ "$lunch" == "" ]; then
     lunch="eng"
 fi
-if [ "$telegram" == "true" ]; then
-    buildlogging="| tee build.log"
-fi
 # if ! [ -e "tgsrv.sh" ] || ! [ -e "config.ini" ] || ! [ -e "status.sh" ]; then
 #     print "╰─ ${Red}Error${Reset} | Corrupted installation"
 #     exit 1
@@ -389,132 +386,236 @@ case "$rom" in
     "DerpFest")
         print "├─ ${Cyan}Building DerpFest${Reset}"
         lunch derp_${codename}-${lunch} $quiet
-        mka derp -j$(nproc --all) $buildlogging
+        if [ "$telegram" == "true" ]; then
+            mka derp -j$(nproc --all) | tee build.log
+        else
+            mka derp -j$(nproc --all)
+        fi
         ;;
     "LineageOS")
         print "├─ ${Cyan}Building LineageOS${Reset}"
         lunch lineage_${codename}-${lunch} $quiet
-        mka bacon -j$(nproc --all) $buildlogging
+        if [ "$telegram" == "true" ]; then
+            mka bacon -j$(nproc --all) | tee build.log
+        else
+            mka bacon -j$(nproc --all)
+        fi
         ;;
     "PixelExperience")
         print "├─ ${Cyan}Building PixelExperience${Reset}"
         lunch aosp_${codename}-${lunch} $quiet
-        mka bacon -j$(nproc --all) $buildlogging
+        if [ "$telegram" == "true" ]; then
+            mka bacon -j$(nproc --all) | tee build.log
+        else
+            mka bacon -j$(nproc --all)
+        fi
         ;;
     "AOSiP")
         print "├─ ${Cyan}Building AOSiP${Reset}"
         lunch aosip_${codename}-${lunch} $quiet
-        mka kronic -j$(nproc --all) $buildlogging
+        if [ "$telegram" == "true" ]; then
+            mka kronic -j$(nproc --all) | tee build.log
+        else
+            mka kronic -j$(nproc --all)
+        fi
         ;;
     "EvolutionX")
         print "├─ ${Cyan}Building EvolutionX${Reset}"
         lunch evolution_${codename}-${lunch} $quiet
-        mka evolution -j$(nproc --all) $buildlogging
+        if [ "$telegram" == "true" ]; then
+            mka evolution -j$(nproc --all) | tee build.log
+        else
+            mka evolution -j$(nproc --all)
+        fi
         ;;
     "crDroid")
         print "├─ ${Cyan}Building crDroid${Reset}"
         lunch lineage_${codename}-${lunch} $quiet
-        mka bacon -j$(nproc --all) $buildlogging
+        if [ "$telegram" == "true" ]; then
+            mka bacon -j$(nproc --all) | tee build.log
+        else
+            mka bacon -j$(nproc --all)
+        fi
         ;;
     "HavocOS")
         print "├─ ${Cyan}Building HavocOS${Reset}"
         lunch havoc_${codename}-${lunch} $quiet
-        mka havoc -j$(nproc --all) $buildlogging
+        if [ "$telegram" == "true" ]; then
+            mka havoc -j$(nproc --all) | tee build.log
+        else
+            mka havoc -j$(nproc --all)
+        fi # ----------------------------------------------------------
         ;;
     "ArrowOS")
         print "├─ ${Cyan}Building ArrowOS${Reset}"
         lunch arrow_${codename}-${lunch} $quiet
-        mka bacon -j$(nproc --all) $buildlogging
+        if [ "$telegram" == "true" ]; then
+            mka bacon -j$(nproc --all) | tee build.log
+        else
+            mka bacon -j$(nproc --all)
+        fi
         ;;
     "ResurrectionRemix")
         print "├─ ${Cyan}Building ResurrectionRemix${Reset}"
         lunch resurrection_${codename}-${lunch} $quiet
-        mka bacon -j$(nproc --all) $buildlogging
+        if [ "$telegram" == "true" ]; then
+            mka bacon -j$(nproc --all) | tee build.log
+        else
+            mka bacon -j$(nproc --all)
+        fi
         ;;
     "BlissROM")
         print "├─ ${Cyan}Building BlissROM${Reset}"
         lunch bliss_${codename}-${lunch} $quiet
-        mka blissify -j$(nproc --all) $buildlogging
+        if [ "$telegram" == "true" ]; then
+            mka blissify -j$(nproc --all) | tee build.log
+        else
+            mka blissify -j$(nproc --all)
+        fi
         ;;
     "ParanoidAndroid")
         print "├─ ${Cyan}Building ParanoidAndroid${Reset}"
         lunch aosp_${codename}-${lunch} $quiet
-        mka bacon -j$(nproc --all) $buildlogging
+        if [ "$telegram" == "true" ]; then
+            mka bacon -j$(nproc --all) | tee build.log
+        else
+            mka bacon -j$(nproc --all)
+        fi
         ;;
     "SyberiaOS")
         print "├─ ${Cyan}Building SyberiaOS${Reset}"
         lunch syberia_${codename}-${lunch} $quiet
-        mka bacon -j$(nproc --all) $buildlogging
+        if [ "$telegram" == "true" ]; then
+            mka bacon -j$(nproc --all) | tee build.log
+        else
+            mka bacon -j$(nproc --all)
+        fi
         ;;
     "LegionOS")
         print "├─ ${Cyan}Building LegionOS${Reset}"
         lunch legion_${codename}-${lunch} $quiet
-        mka bacon -j$(nproc --all) $buildlogging
+        if [ "$telegram" == "true" ]; then
+            mka bacon -j$(nproc --all) | tee build.log
+        else
+            mka bacon -j$(nproc --all)
+        fi
         ;;
     "dotOS")
         print "├─ ${Cyan}Building dotOS${Reset}"
         lunch dot_${codename}-${lunch} $quiet
-        mka bacon -j$(nproc --all) $buildlogging
+        if [ "$telegram" == "true" ]; then
+            mka bacon -j$(nproc --all) | tee build.log
+        else
+            mka bacon -j$(nproc --all)
+        fi
         ;;
     "PixysOS")
         print "├─ ${Cyan}Building PixysOS${Reset}"
         lunch pixys_${codename}-${lunch} $quiet
-        mka pixys -j$(nproc --all) $buildlogging
+        if [ "$telegram" == "true" ]; then
+            mka pixys -j$(nproc --all) | tee build.log
+        else
+            mka pixys -j$(nproc --all)
+        fi
         ;;
     "Xtended")
         print "├─ ${Cyan}Building Xtended${Reset}"
         lunch xtended_${codename}-${lunch} $quiet
-        mka xtended -j$(nproc --all) $buildlogging
+        if [ "$telegram" == "true" ]; then
+            mka xtended -j$(nproc --all) | tee build.log
+        else
+            mka xtended -j$(nproc --all)
+        fi
         ;;
     "NitrogenOS")
         print "├─ ${Cyan}Building NitrogenOS${Reset}"
         lunch nitrogen_${codename}-${lunch} $quiet
-        mka bacon -j$(nproc --all) $buildlogging
+        if [ "$telegram" == "true" ]; then
+            mka bacon -j$(nproc --all) | tee build.log
+        else
+            mka bacon -j$(nproc --all)
+        fi
         ;;
     "OctaviOS")
         print "├─ ${Cyan}Building OctaviOS${Reset}"
         lunch octavi_${codename}-${lunch} $quiet
-        mka bacon -j$(nproc --all) $buildlogging
+        if [ "$telegram" == "true" ]; then
+            mka bacon -j$(nproc --all) | tee build.log
+        else
+            mka bacon -j$(nproc --all)
+        fi
         ;;
     "YAAP")
         print "├─ ${Cyan}Building YAAP${Reset}"
         lunch yaap_${codename}-${lunch} $quiet
-        mka bacon -j$(nproc --all) $buildlogging
+        if [ "$telegram" == "true" ]; then
+            mka bacon -j$(nproc --all) | tee build.log
+        else
+            mka bacon -j$(nproc --all)
+        fi
         ;;
     "StyxProject")
         print "├─ ${Cyan}Building StyxProject${Reset}"
         lunch styx_${codename}-${lunch} $quiet
-        mka bacon -j$(nproc --all) $buildlogging
+        if [ "$telegram" == "true" ]; then
+            mka bacon -j$(nproc --all) | tee build.log
+        else
+            mka bacon -j$(nproc --all)
+        fi
         ;;
     "ElixirOS")
         print "├─ ${Cyan}Building ElixirOS${Reset}"
         lunch elixir_${codename}-${lunch} $quiet
-        mka bacon -j$(nproc --all) $buildlogging
+        if [ "$telegram" == "true" ]; then
+            mka bacon -j$(nproc --all) | tee build.log
+        else
+            mka bacon -j$(nproc --all)
+        fi
         ;;
     "ProjectSakura")
         print "├─ ${Cyan}Building ProjectSakura${Reset}"
         lunch sakura_${codename}-${lunch} $quiet
-        mka bacon -j$(nproc --all) $buildlogging
+        if [ "$telegram" == "true" ]; then
+            mka bacon -j$(nproc --all) | tee build.log
+        else
+            mka bacon -j$(nproc --all)
+        fi
         ;;
     "SuperiorOS")
         print "├─ ${Cyan}Building SuperiorOS${Reset}"
         lunch superior_${codename}-${lunch} $quiet
-        mka bacon -j$(nproc --all) $buildlogging
+        if [ "$telegram" == "true" ]; then
+            mka bacon -j$(nproc --all) | tee build.log
+        else
+            mka bacon -j$(nproc --all)
+        fi
         ;;
     "Nameless")
         print "├─ ${Cyan}Building Nameless${Reset}"
         lunch nameless_${codename}-${lunch} $quiet
-        mka bacon -j$(nproc --all) $buildlogging
+        if [ "$telegram" == "true" ]; then
+            mka bacon -j$(nproc --all) | tee build.log
+        else
+            mka bacon -j$(nproc --all)
+        fi
         ;;
     "PixelOS")
         print "├─ ${Cyan}Building PixelOS${Reset}"
         lunch pixelos_${codename}-${lunch} $quiet
-        mka bacon -j$(nproc --all) $buildlogging
+        if [ "$telegram" == "true" ]; then
+            mka bacon -j$(nproc --all) | tee build.log
+        else
+            mka bacon -j$(nproc --all)
+        fi
         ;;
     "AOSP")
         print "├─ ${Cyan}Building AOSP${Reset}"
         lunch aosp_${codename}-${lunch} $quiet
-        mka bacon -j$(nproc --all) $buildlogging
+        if [ "$telegram" == "true" ]; then
+            mka bacon -j$(nproc --all) | tee build.log
+        else
+            mka bacon -j$(nproc --all)
+        fi
         ;;
     *)
         print "╰─ ${Red}Error:${Reset} Unknown ROM ${Reset}'${rom}'${Reset}"
