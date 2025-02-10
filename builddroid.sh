@@ -356,7 +356,7 @@ if [ "$ota" == "true" ]; then
     fi
     unset file_path
 fi
-if [ "$flavour" == "derpfest" ]; then
+if [ "$ROM" == "DerpFest" ]; then
     if [ -e "hardware/samsung" ]; then
         print "├─ ${Cyan}Applying fix for DerpFest 14${Reset}"
         cd vendor/support/res/values
