@@ -15,6 +15,7 @@ Cyan='\033[1;36m'
 White='\033[0;37m'
 
 buildstatus="${Cyan}Warming up ${Reset}| Running BuildDroid ${Blue}${version}${Reset}"
+directory="out/target/product/$codename"
 
 # --------------------
 #       Prepare
@@ -118,6 +119,9 @@ if [ "$quiet" == "true" ]; then
     quiet="> /dev/null"
 else
     quiet=""
+fi
+if [ "$console" = "" ]; then
+    console=true
 fi
 if [ "$lunch" == "" ]; then
     lunch="eng"
@@ -444,7 +448,7 @@ case "$rom" in
             mka havoc -j$(nproc --all) | tee build.log
         else
             mka havoc -j$(nproc --all)
-        fi # ----------------------------------------------------------
+        fi
         ;;
     "ArrowOS")
         print "├─ ${Cyan}Building ArrowOS${Reset}"
