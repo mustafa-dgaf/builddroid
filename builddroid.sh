@@ -823,28 +823,30 @@ if [ "$status_build" == "success" ]; then
 else
     print "╰─ ${Red}Build failed${Reset} | Time taken: ${time_all}"
 fi
-telegram "<b>Build completed</b> | Time taken: ${time_all}"
+if [ "$status_build" == "success" ]; then
+    build1="<b>Build <u>success</u></b> | Time taken: ${time_all}"
+    build5="Download: <a href=\"${downloadurl}\">${server}</a>"
+else
+    build1="<b>Build <u>failed</u></b> | Time taken: ${time_all}"
+    build5=""
+fi
+build2="Built <b>${ROM}</b> for <b>${codename}</b>, <b>${lunch}</b>"
+build3="<b>Time statistics:</b> ROM sync: <b>${time_rom_sync}</b>, Trees: <b>${time_trees}</b>, Build: <b>${time_build}</b>, Upload: <b>${time_upload}</b>"
+build4=""
+if [ "$status_build" == "fail" ]; then
+    if ! [ -e "./out/error.log" ]; then
+        build5="No error log found"
+    fi
+fi
+buildinfo=$(echo -e "${build1}\n${build2}\n${build3}\n${build4}\n${build5}")
+telegram "${buildinfo}"
 if [ $status_build == "fail" ]; then
     if [ -e "./out/error.log" ]; then
         errorlog="./out/error.log"
         curl -v -F "chat_id=${chat_id}" -F document=@${errorlog} https://api.telegram.org/bot${telegramtoken}/sendDocument > /dev/null 2>&1
         unset errorlog
-    else
-        noerrorlog=true
     fi
 fi
-if [ "$status_build" == "success" ]; then
-    build1="<b>Build <u>success</u></b> | Time taken: ${time_all}"
-    build5="Download: <a href=\"${downloadurl}\">${server}</a>"
-elif [ "$noerrorlog" == true ]; then
-    build1="<b>Build <u>failed</u></b> | Time taken: ${time_all}"
-    build5="No error log found"
-fi
-build2="Built <b>${ROM}</b> for <b>${codename}</b>, <b>${lunch}</b>"
-build3="<b>Time statistics:</b> ROM sync: <b>${time_rom_sync}</b>, Trees: <b>${time_trees}</b>, Build: <b>${time_build}</b>, Upload: <b>${time_upload}</b>"
-build4=""
-buildinfo=$(echo -e "${build1}\n${build2}\n${build3}\n${build4}\n${build5}")
-telegram "${buildinfo}"
 if [ "$status_build" == "success" ]; then
     exit 0
 else
