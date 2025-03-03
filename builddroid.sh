@@ -272,8 +272,8 @@ if [ "$sign" == "true" ]; then
     fi
 fi
 if [ "$sign" == "true" ]; then # to be done: support for other ROMs
-    if [ -e "./vendor/derp/signing/keys" ]; then
-        mv "${keys}/*" "./vendor/derp/signing/keys"
+    if [ -e "vendor/derp/signing/keys" ]; then
+        mv "${keys}/*" "vendor/derp/signing/keys"
     fi
     telegram "Build <u>won't be signed</u>, unless you have put the keys in correct directory"
 fi
@@ -320,10 +320,14 @@ if [ "$trees" != "" ]; then
             fi
         done
         if [ -e "hardware/samsung" ]; then
-            print "│     ├─ ${Cyan}Backing up NFC${Reset}"
-            mv hardware/samsung/nfc hardware/tmp
-            nfcfix=true
-            print "│     ├─ ${Cyan}Cloning trees${Reset}"
+            if [ -e "hardware/samsung/nfc" ]; then
+                print "│     ├─ ${Cyan}Backing up NFC${Reset}"
+                mkdir hardware/tmp
+                mv hardware/samsung/nfc hardware/tmp
+                rm -rf hardware/samsung/nfc
+                nfcfix=true
+                print "│     ├─ ${Cyan}Cloning trees${Reset}"
+            fi
         else
             print "│  ╰─ ${Cyan}Cloning trees${Reset}"
         fi
@@ -331,8 +335,9 @@ if [ "$trees" != "" ]; then
             $line $quiet
         done
         if [ -e "hardware/samsung" ]; then
-            mv hardware/tmp hardware/samsung/nfc
             print "│     ╰─ ${Cyan}Restoring NFC${Reset}"
+            mv hardware/tmp/nfc hardware/samsung/nfc
+            rm -rf hardware/tmp
         fi
     fi
 fi
