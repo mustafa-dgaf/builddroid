@@ -41,7 +41,6 @@ telegram() {
     fi
 }
 
-print "╭─ $buildstatus"
 rm -rf pid1 pid2 pid3
 echo $$ > pid1
 
@@ -137,6 +136,7 @@ fi
 #         exit 1
 #     fi
 # fi
+print "╭─ $buildstatus"
 
 # --------------------
 #   Unsupported ROM
@@ -267,15 +267,16 @@ if [ "$sign" == "true" ]; then
             sign=false
             missing_keys=$(echo $missing_keys | tr '\n' ' ')
             print "├─ ${Red}Error${Reset} | Missing key files: ${missing_keys}"
-            telegram "Error | Missing key files: ${missing_keys}"
+            telegram "Error | Missing key files: ${missing_keys}. Build won't be signed."
         fi
     fi
 fi
 if [ "$sign" == "true" ]; then # to be done: support for other ROMs
     if [ -e "vendor/derp/signing/keys" ]; then
-        mv "${keys}/*" "vendor/derp/signing/keys"
+        cp -af "${keys}"/* "vendor/derp/signing/keys"
+    else
+        telegram "Build <u>won't be signed</u>, ROM is not supported. If you know how to support it, open a pull request on github."
     fi
-    telegram "Build <u>won't be signed</u>, unless you have put the keys in correct directory"
 fi
 if [ "$manifest" != "" ]; then
     if [[ "$manifest" == *github.com* ]]; then
@@ -319,7 +320,7 @@ if [ "$trees" != "" ]; then
                 rm -rf "$dir"
             fi
         done
-        if [ -e "hardware/samsung" ]; then
+        if [[ $trees == *"hardware/samsung"* ]]; then
             if [ -e "hardware/samsung/nfc" ]; then
                 print "│     ├─ ${Cyan}Backing up NFC${Reset}"
                 mkdir hardware/tmp
@@ -334,7 +335,7 @@ if [ "$trees" != "" ]; then
         echo "$trees" | while read -r line; do
             $line $quiet
         done
-        if [ -e "hardware/samsung" ]; then
+        if [ -e "hardware/tmp/nfc" ]; then
             print "│     ╰─ ${Cyan}Restoring NFC${Reset}"
             mv hardware/tmp/nfc hardware/samsung/nfc
             rm -rf hardware/tmp
