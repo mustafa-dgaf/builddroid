@@ -317,16 +317,21 @@ if [ "$trees" != "" ]; then
             dir=$(echo "$line" | awk '{print $(NF-2)}')
             if [ -d "$dir" ]; then
                 print "│  ├─ ${Cyan}Removing directory: ${Reset}$dir"
+                if [[ $dir == "hardware/samsung" ]]; then
+                    if [ -e "hardware/samsung/nfc" ]; then
+                        # print "│  │  ├─ ${Cyan}Backing up NFC${Reset}"
+                        mkdir hardware/tmp
+                        mv hardware/samsung/nfc hardware/tmp
+                        rm -rf hardware/samsung/nfc
+                        nfcfix=true
+                        print "│     ├─ ${Cyan}Cloning trees${Reset}"
+                    fi
+                fi
                 rm -rf "$dir"
             fi
         done
         if [[ $trees == *"hardware/samsung"* ]]; then
             if [ -e "hardware/samsung/nfc" ]; then
-                print "│     ├─ ${Cyan}Backing up NFC${Reset}"
-                mkdir hardware/tmp
-                mv hardware/samsung/nfc hardware/tmp
-                rm -rf hardware/samsung/nfc
-                nfcfix=true
                 print "│     ├─ ${Cyan}Cloning trees${Reset}"
             fi
         else
@@ -392,6 +397,7 @@ fi
 
 time_build="$(date +%s)"
 source build/envsetup.sh $quiet
+mka installclean
 case "$rom" in
     "DerpFest")
         print "├─ ${Cyan}Building DerpFest${Reset}"
