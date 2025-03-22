@@ -1,5 +1,5 @@
-#/bin/bash
-version=v2.4
+#!/bin/bash
+version=v2.4.1
 source config.ini || { echo "Error occurred while parsing config.ini"; exit 1; }
 
 time_all="$(date +%s)"
@@ -42,6 +42,7 @@ telegram() {
 }
 
 rm -rf pid1 pid2 pid3
+rm -rf build.log
 echo $$ > pid1
 
 # --------------------
@@ -87,6 +88,13 @@ if [ "$telegramtoken" == "" ]; then
             exit 1
         fi
     fi
+    if [ "$user_id" == "" ]; then
+        if [ "$telegram" == true ]; then
+            print "╰─ ${Red}Error${Reset} | User ID is empty"
+            telegram "Error | User ID is empty"
+            exit 1
+        fi
+    fi
 fi
 if [ "$sign" == "true" ]; then
     if [ "$keys" == "" ]; then
@@ -125,18 +133,19 @@ fi
 if [ "$lunch" == "" ]; then
     lunch="eng"
 fi
-# if ! [ -e "tgsrv.sh" ] || ! [ -e "config.ini" ] || ! [ -e "status.sh" ]; then
-#     print "╰─ ${Red}Error${Reset} | Corrupted installation"
-#     exit 1
-# fi
-# if ! [ -e "packages" ] || ! [ -e "vendor" ] || ! [ -e "build" ]; then
-#     cd ..
-#     if ! [ -e "packages" ] || ! [ -e "vendor" ] || ! [ -e "build" ]; then
-#         print "╰─ ${Red}Error${Reset} | Not inside ROM sources"
-#         exit 1
-#     fi
-# fi
+if ! [ -e "tgsrv.sh" ] || ! [ -e "config.ini" ] || ! [ -e "status.sh" ]; then
+    print "╰─ ${Red}Error${Reset} | Corrupted installation"
+    exit 1
+fi
+if ! [ -e "packages" ] || ! [ -e "vendor" ] || ! [ -e "build" ]; then
+    print "╰─ ${Red}Error${Reset} | Not inside ROM sources"
+    exit 1
+fi
+if [ "$telegram" == true ]; then
+    ./tgsrv.sh &
+fi
 print "╭─ $buildstatus"
+
 
 # --------------------
 #   Unsupported ROM
@@ -286,7 +295,7 @@ if [ "$manifest" != "" ]; then
     else
         if command -v wget &> /dev/null; then
             buildstatus="${Cyan}Downloading manifest using wget${Reset}"
-            print "├─ $buildstatus"
+            prqint "├─ $buildstatus"
             wget $manifest -O .repo/local_manifests/roomservice.xml $quiet
         elif command -v curl &> /dev/null; then
             buildstatus="${Cyan}Downloading manifest using curl${Reset}"
@@ -398,6 +407,7 @@ fi
 time_build="$(date +%s)"
 source build/envsetup.sh $quiet
 mka installclean
+./status.sh &
 case "$rom" in
     "DerpFest")
         print "├─ ${Cyan}Building DerpFest${Reset}"

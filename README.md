@@ -50,6 +50,7 @@ For now, only GitHub is supported.<br>
 - `private_chat_id` - to send BashUpload download link (because the file can be downloaded only once). you can use `chat_id`<br>
 - `console` - if true, will show messages printed by this script<br>
 - `quiet` -  if true, hide repo tool, github, and other's output, **it doesn't hide script output and build logs**<br>
+- `user_id` - your telegram user ID, allows you to kill build task through telegram (`/kill`)
 
 ### Secrets
 - `githubtoken` - for uploading ota jsons<br>
