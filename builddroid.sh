@@ -295,7 +295,7 @@ if [ "$manifest" != "" ]; then
     else
         if command -v wget &> /dev/null; then
             buildstatus="${Cyan}Downloading manifest using wget${Reset}"
-            prqint "├─ $buildstatus"
+            print "├─ $buildstatus"
             wget $manifest -O .repo/local_manifests/roomservice.xml $quiet
         elif command -v curl &> /dev/null; then
             buildstatus="${Cyan}Downloading manifest using curl${Reset}"
