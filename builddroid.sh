@@ -117,7 +117,7 @@ if [ "$server" == "PixelDrain" ]; then
         exit 1
     fi
 fi
-if [ "$server" == "BashUpload" ] && [ "$pixeldraintoken" == "" ]; then
+if [ "$server" == "BashUpload" ] && [ "$private_chat_id" == "" ]; then
     print "╰─ ${Red}Error${Reset} | Private TG ChatID is empty"
     telegram "Error | Private TG ChatID is empty"
     exit 1
