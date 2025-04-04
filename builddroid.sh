@@ -49,6 +49,16 @@ echo $$ > pid1
 #   Check integrity
 # --------------------
 
+if [ -e "builddroid" ]; then
+    rm -rf builddroid
+fi
+
+if [ -e "builddroid.sh" ]; then
+    echo -e "\nDetected older version of BuildDroid. Overwriting...\n\n"
+fi
+git clone https://github.com/wojtekojtek/builddroid builddroid
+mv builddroid/* .
+
 if [ "$codename" == "" ]; then
     print "╰─ ${Red}Error${Reset} | Device codename is empty"
     telegram "Error | Device codename is empty"
