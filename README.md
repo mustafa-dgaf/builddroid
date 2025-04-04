@@ -10,7 +10,7 @@ Connect to `crave devspace`, create your project (`crave clone list` and `crave 
 Create an empty file with name `config.ini`, then put `#!/bin/bash` at start of the file. (`nano config.ini`) After that, add some variables.<br>
 Example `config.ini` file can be found [here](https://github.com/wojtekojtek/builddroid/blob/main/examples/config.ini)<br>
 When you'll be ready, simply run `exit` and:<br>
-`crave run --no-patch -- "curl https://raw.githubusercontent.com/wojtekojtek/builddroid/refs/heads/main/builddroid.sh | bash"`
+`crave run --no-patch -- "curl https://raw.githubusercontent.com/wojtekojtek/builddroid/refs/heads/main/builddroid.sh | bash"`<br>
 If you ran all commands correctly, you should see "Waiting for build id:XXXXX to start...". You can close your terminal now. Check results on [crave](https://foss.crave.io).<br>
 
 ## Variables
