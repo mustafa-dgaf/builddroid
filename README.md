@@ -5,12 +5,13 @@ An opensource tool to build Android ROMs on Crave. If you have better name for t
 > [!WARNING]  
 > Some features might be unstable or subject to change in the future.
 
-## How to start
-Clone this repo:
-`git clone https://github.com/wojtekojtek/builddroid` and enter that directory.<br>
-Create an empty file with name `config.ini`, then put `#!/bin/bash` at start of the file. After that, add some variables.<br>
-Example `config.ini` file: [click here](https://github.com/wojtekojtek/builddroid/blob/main/examples/config.ini)<br>
-When you'll be ready, simply run `chmod +x builddroid.sh && ./builddroid.sh`
+## How to start<br>
+Connect to `crave devspace`, create your project (`crave clone list` and `crave clone create "my_first_build" --projectID XX`) and run `crave ssh`.<br>
+Create an empty file with name `config.ini`, then put `#!/bin/bash` at start of the file. (`nano config.ini`) After that, add some variables.<br>
+Example `config.ini` file can be found [here](https://github.com/wojtekojtek/builddroid/blob/main/examples/config.ini)<br>
+When you'll be ready, simply run `exit` and:<br>
+`crave run --no-patch -- "curl https://raw.githubusercontent.com/wojtekojtek/builddroid/refs/heads/main/builddroid.sh | bash"`
+If you ran all commands correctly, you should see "Waiting for build id:XXXXX to start...". You can close your terminal now. Check results on [crave](https://foss.crave.io).<br>
 
 ## Variables
 There are 30 variables, only 3 are required to build custom ROM.
