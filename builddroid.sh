@@ -400,7 +400,7 @@ if [ "$ROM" == "DerpFest" ]; then
         curl https://pastebin.com/raw/aCi9YAvL --output attrs.xml $quiet
         cd ../../../..
         cd hardware/samsung
-        print "│  ╰─ ${Cyan}Removing DAP and Doze from ${Reset}hardware/samsung"
+        print "│  ╰─ ${Cyan}Fixing conflicting files in ${Reset}hardware/samsung"
         rm -rf doze dap
         cd ../..
     else
@@ -414,7 +414,7 @@ elif [ "$ROM" == "InfinityX" ]; then
     if [ -e "hardware/samsung/dap" || -e "hardware/samsung/doze"  || -e "hardware/samsung/AdvancedDisplay" ]; then
         print "│  ╰─ ${Cyan}Applying fix for Infinity X${Reset}"
         cd hardware/samsung
-        print "│  ╰─ ${Cyan}Removing DAP and Doze from ${Reset}hardware/samsung"
+        print "│  ╰─ ${Cyan}Fixing conflicting files in ${Reset}hardware/samsung"
         rm -rf doze dap AdvancedDisplay
         cd ../..
     fi
