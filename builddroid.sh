@@ -188,6 +188,7 @@ if [ "$unsupported" != "" ]; then
             ["ElixirOS"]="Project-Elixir"
             ["ProjectSakura"]="ProjectSakura"
             ["SuperiorOS"]="SuperiorOS"
+            ["InfinityX"]="ProjectInfinity-X"
             ["Nameless"]="NamelessRom"
             ["PixelOS"]="PixelOS-AOSP"
         )
@@ -240,6 +241,7 @@ ROM_PRIORITY=(
     "ProjectSakura:vendor/sakura"
     "SuperiorOS:vendor/superior"
     "Nameless:vendor/nameless"
+    "InfinityX:vendor/infinity"
     "PixelOS:vendor/pixelos"
     "LineageOS:build/soong/Android.bp"
     "AOSP:build/make/core/envsetup.mk"
@@ -376,7 +378,7 @@ if [ "$ota" == "true" ]; then
     file_path="packages/apps/Updater/app/src/main/res/values/strings.xml"
     if [[ ! -f "$file_path" ]]; then
         print "│  ╰─ ${Red}Error${Reset} | Looks like the strings.xml file is missing, please check $file_path"
-        telegram "Looks like the strings.xml file is missing, please check $file_path"
+        telegram "Looks like the strings.xml file is missing, please check logs"
         status_ota=fail
     else
         print "│  ├─ ${Cyan}Replacing Updater Server URL${Reset}"
@@ -391,14 +393,14 @@ if [ "$ota" == "true" ]; then
     unset file_path
 fi
 if [ "$ROM" == "DerpFest" ]; then
-    if [ -e "hardware/samsung" ]; then
+    if [ -e "hardware/samsung/dap" || -e "hardware/samsung/doze" ]; then
         print "├─ ${Cyan}Applying fix for DerpFest 14${Reset}"
         cd vendor/support/res/values
         rm -rf attrs.xml
         curl https://pastebin.com/raw/aCi9YAvL --output attrs.xml $quiet
         cd ../../../..
         cd hardware/samsung
-        print "│  ╰─ ${Cyan}Removing DAP from ${Reset}hardware/samsung"
+        print "│  ╰─ ${Cyan}Removing DAP and Doze from ${Reset}hardware/samsung"
         rm -rf doze dap
         cd ../..
     else
@@ -407,6 +409,14 @@ if [ "$ROM" == "DerpFest" ]; then
         rm -rf attrs.xml
         curl https://pastebin.com/raw/aCi9YAvL --output attrs.xml $quiet
         cd ../../../..
+    fi
+elif [ "$ROM" == "InfinityX" ]; then
+    if [ -e "hardware/samsung/dap" || -e "hardware/samsung/doze"  || -e "hardware/samsung/AdvancedDisplay" ]; then
+        print "│  ╰─ ${Cyan}Applying fix for Infinity X${Reset}"
+        cd hardware/samsung
+        print "│  ╰─ ${Cyan}Removing DAP and Doze from ${Reset}hardware/samsung"
+        rm -rf doze dap AdvancedDisplay
+        cd ../..
     fi
 fi
 
@@ -627,7 +637,7 @@ case "$rom" in
         fi
         ;;
     "Nameless")
-        print "├─ ${Cyan}Building Nameless${Reset}"
+        print "├─ ${Cyan}Building Nameless ROM${Reset}"
         lunch nameless_${codename}-${lunch} $quiet
         if [ "$telegram" == "true" ]; then
             mka bacon -j$(nproc --all) | tee build.log
@@ -638,6 +648,15 @@ case "$rom" in
     "PixelOS")
         print "├─ ${Cyan}Building PixelOS${Reset}"
         lunch pixelos_${codename}-${lunch} $quiet
+        if [ "$telegram" == "true" ]; then
+            mka bacon -j$(nproc --all) | tee build.log
+        else
+            mka bacon -j$(nproc --all)
+        fi
+        ;;
+    "InfinityX")
+        print "├─ ${Cyan}Building Infinity X${Reset}"
+        lunch infinity_${codename}-${lunch} $quiet
         if [ "$telegram" == "true" ]; then
             mka bacon -j$(nproc --all) | tee build.log
         else
