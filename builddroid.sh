@@ -151,6 +151,9 @@ if ! [ -e "packages" ] || ! [ -e "vendor" ] || ! [ -e "build" ]; then
     print "╰─ ${Red}Error${Reset} | Not inside ROM sources"
     exit 1
 fi
+if [ $cleanbuild == "" ]; then
+    cleanbuild=false
+fi
 if [ "$telegram" == true ]; then
     ./tgsrv.sh &
 fi
@@ -273,6 +276,10 @@ Detected: <b>${ROM}</b>"
 fi
 if [ "$rom" == "" ]; then
     rom="$ROM"
+fi
+if [ "$cleanbuild" == true ]; then
+    print "├─ ${Cyan}Cleaning build directory${Reset}"
+    rm -rf out
 fi
 
 # --------------------

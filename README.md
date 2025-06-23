@@ -60,3 +60,6 @@ For now, only GitHub is supported.<br>
 
 ### Unsupported ROMs (only for crave)
 - `unsupported` - put repo init command here to sync unsupported by crave rom<br>
+
+### Build settings
+- `cleanbuild` - set to true only if you got permission and you need to<br>
